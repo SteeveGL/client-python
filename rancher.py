@@ -349,6 +349,7 @@ class Client(object):
         self._load_schemas(force=True)
 
     def by_id(self, type, id, **kw):
+        type = type.replace(".", "_").replace("-", "")
         id = str(id)
         url = self.schema.types[type].links.collection
         if url.endswith('/'):
@@ -364,6 +365,7 @@ class Client(object):
                 raise e
 
     def update_by_id(self, type, id, *args, **kw):
+        type = type.replace(".", "_").replace("-", "")
         url = self.schema.types[type].links.collection
         if url.endswith('/'):
             url = url + id
@@ -403,6 +405,7 @@ class Client(object):
                     raise e
 
     def _validate_list(self, type, **kw):
+        type = type.replace(".", "_").replace("-", "")
         if not self._strict:
             return
 
@@ -420,6 +423,7 @@ class Client(object):
             raise ClientApiError(k + ' is not searchable field')
 
     def list(self, type, **kw):
+        type = type.replace(".", "_").replace("-", "")
         if type not in self.schema.types:
             raise ClientApiError(type + ' is not a valid type')
 
@@ -431,6 +435,7 @@ class Client(object):
         return self.by_id(obj.type, obj.id)
 
     def create(self, type, *args, **kw):
+        type = type.replace(".", "_").replace("-", "")
         collection_url = self.schema.types[type].links.collection
         return self._post(collection_url, data=self._to_dict(*args, **kw))
 
